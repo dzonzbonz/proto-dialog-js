@@ -1,22 +1,22 @@
 /**
- * jQuery jsDialog
+ * jQuery protoDialog
  * @author dzonz
  */
 (function($) {
 
-    var _jsDialogControllerClass = function($target, _settings) {
+    var _protoDialogControllerClass = function($target, _settings) {
         var _instance = _settings;
 
-        var $canvas = $('<div class="js-dialog-overlay"></div>');
+        var $canvas = $('<div class="proto-dialog-overlay"></div>');
 
-        var _browserWindow = $('<div class="js-dialog-window"></div>');
-        var _browserInner = $('<div class="js-dialog-inner"></div>');
+        var _browserWindow = $('<div class="proto-dialog-window"></div>');
+        var _browserInner = $('<div class="proto-dialog-inner"></div>');
 
-        var _browserClose = $('<div class="js-dialog-close js-dialog-button"></div>');
+        var _browserClose = $('<div class="proto-dialog-close proto-dialog-button"></div>');
 
-        var _browserTitle = $('<div class="js-dialog-title"><h3></h3></div>');
-        var _browserContent = $('<div class="js-dialog-content"></div>');
-        var _browserActions = $('<div class="js-dialog-actions"></div>');
+        var _browserTitle = $('<div class="proto-dialog-title"><h3></h3></div>');
+        var _browserContent = $('<div class="proto-dialog-content"></div>');
+        var _browserActions = $('<div class="proto-dialog-actions"></div>');
 
         $target.detach().appendTo(_browserContent);
 
@@ -62,7 +62,7 @@
         this.settings = function(newSettings) {
             _instance = newSettings;
 
-            _browserWindow.attr('class', 'js-dialog-window');
+            _browserWindow.attr('class', 'proto-dialog-window');
 
             if (_instance['size']) {
                 _browserWindow.addClass(_instance['size']);
@@ -74,7 +74,7 @@
 
                 for (var _action in _instance.actions) {
                     var _actionConfig = _instance.actions[_action];
-                    var $action = $('<button type="button" class="js-dialog-button ' + _actionConfig['class'] + '">' + _actionConfig['label'] + '</button>');
+                    var $action = $('<button type="button" class="proto-dialog-button ' + _actionConfig['class'] + '">' + _actionConfig['label'] + '</button>');
                     _browserActions.append($action);
                     (function(_a) {
                         $action.click(function(e) {
@@ -132,12 +132,12 @@
 
             return this.each(function() {
                 var $this = $(this);
-                var _data = $this.data('jsDialog');
+                var _data = $this.data('protoDialog');
 
                 // If the plugin hasn't been initialized yet
                 if (!_data) {
                     // search for elements
-                    var _controller = new _jsDialogControllerClass($this, _settings);
+                    var _controller = new _protoDialogControllerClass($this, _settings);
 
                     _data = {
                         target: $this,
@@ -145,17 +145,17 @@
                         controller: _controller
                     };
                 } else {
-                    _data = $(this).data('jsDialog');
+                    _data = $(this).data('protoDialog');
                     _data['settings'] = _settings;
                 }
 
-                $(this).data('jsDialog', _data);
+                $(this).data('protoDialog', _data);
             });
         },
         open: function(_settings) {
             return this.each(function() {
                 var $this = $(this);
-                var _data = $this.data('jsDialog');
+                var _data = $this.data('protoDialog');
                 // If the plugin hasn't been initialized yet
                 if (_data) {
                     // search for elements
@@ -167,7 +167,7 @@
         close: function( ) {
             return this.each(function() {
                 var $this = $(this);
-                var _data = $this.data('jsDialog');
+                var _data = $this.data('protoDialog');
 
                 // If the plugin hasn't been initialized yet
                 if (_data) {
@@ -180,14 +180,14 @@
         settings: function(_settings) {
             return this.each(function() {
                 var $this = $(this);
-                var _data = $this.data('jsDialog');
+                var _data = $this.data('protoDialog');
 
                 // If the plugin hasn't been initialized yet
                 if (_data) {
                     // search for elements
                     var _controller = _data['controller'];
                     _data['settings'] = _settings;
-                    $this.data('jsDialog', _data);
+                    $this.data('protoDialog', _data);
                     _controller.settings(_settings);
                 }
             });
@@ -195,13 +195,13 @@
 
     };
 
-    $.fn.jsDialog = function(method) {
+    $.fn.protoDialog = function(method) {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof method === 'object' || !method) {
             return methods.init.apply(this, arguments);
         } else {
-            $.error('Method ' + method + ' does not exist on jQuery.jsDialog');
+            $.error('Method ' + method + ' does not exist on jQuery.protoDialog');
         }
     };
 

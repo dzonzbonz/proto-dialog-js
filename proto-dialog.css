@@ -1,43 +1,43 @@
-.js-dialog-overlay { 
+.proto-dialog-overlay { 
     position: fixed; z-index: 100; background-color: #000; background-color: rgba(0,0,0,0.7); 
     width: 100%; height: 100%; top: 0; left: 0; padding: 0; margin: 0; display: none;
 }
 
-.js-dialog-window { 
+.proto-dialog-window { 
     position: absolute; left: 20px; top: 20px; right: 20px; bottom: 20px; 
 }
 
-.js-dialog-window.small { 
+.proto-dialog-window.small { 
     left: 25%; top: 25%; right: 25%; bottom: 25%; overflow: auto;
 }
 
-.js-dialog-inner { 
+.proto-dialog-inner { 
     border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,.5);
     position: absolute; left:0px; top: -100%; width: 100%; height: 100%; overflow: hidden;
 }
 
-.js-dialog-title {
+.proto-dialog-title {
     position: absolute;
     left: 0px; top: 0px; right: 46px; overflow: auto; height: 45px;
     padding: 10px;
 }
 
-.js-dialog-title h3 {
+.proto-dialog-title h3 {
     margin: 0px; font-size: 20px; line-height: 24px; color: #777;
 }
 
-.js-dialog-button.js-dialog-close {
+.proto-dialog-button.proto-dialog-close {
     width: 45px; height: 45px; line-height: 45px; z-index: 3;
     position: absolute; right: 0; top: 0; cursor: pointer;
     background-color: #777; color: #fff;
 }
 
-.js-dialog-button.js-dialog-close:after {
+.proto-dialog-button.proto-dialog-close:after {
     position: absolute; left: 0; top: 0; content: "X"; text-align: center; display: block;
     width: 45px; height: 45px; line-height: 45px; font-weight: bold; 
 }
 
-.js-dialog-content {
+.proto-dialog-content {
     position: absolute;
     left: 0px; top: 45px; right: 0px; bottom: 45px; overflow: auto;
     background-color: #fff;
@@ -49,8 +49,8 @@
     padding: 0;
 }
 
-.js-dialog-content:before, 
-.js-dialog-content:after {
+.proto-dialog-content:before, 
+.proto-dialog-content:after {
     display: table;
     line-height: 0;
     content: "";
@@ -59,11 +59,11 @@
     box-sizing: border-box;
 }
 
-.js-dialog-content:after {
+.proto-dialog-content:after {
     clear: both;
 }
 
-.js-dialog-actions {
+.proto-dialog-actions {
     position: absolute;
     left: 0px; bottom: 0px; right: 0px; overflow: auto; height: 45px;
     padding: 5px; text-align: right;
