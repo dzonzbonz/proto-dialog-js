@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Proto Dialog Test</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="proto-dialog.css"/>
+        <script type="text/javascript" src="jquery.proto-dialog.js"></script>
+        <script type="text/javascript" language="javascript">
+            $(document).ready(function() {
+                $('#proto-dialog').protoDialog({
+                    'actions': {
+                        'refresh': {
+                            'label': 'Refresh',
+                            'class': 'btn btn-default'
+                        },
+                        'apply': {
+                            'label': 'Apply',
+                            'class': 'btn btn-primary'
+                        },
+                        'custom': {
+                            'label': 'Custom',
+                            'class': 'btn btn-warning',
+                            'on': {
+                                'click': function(e) {
+                                    $(this).html('custom - custom on click event');
+                                },
+                                'mouseover': function(e) {
+                                    $(this).html('custom - custom on mouse over event');
+                                }
+                            }
+                        },
+                        'switch': {
+                            'label': 'Switch Buttons',
+                            'class': 'btn btn-info'
+                        }
+                    },
+                    onInit: function($dialog) {
+                        alert('Dialog Initialized');
+                    },
+                    onOpen: function($dialog) {
+                        alert('Dialog is about to be opened');
+                    },
+                    onOpened: function($dialog) {
+                        alert('Dialog is opened');
+                    },
+                    onClose: function($dialog) {
+                        alert('Dialog is about to be closed');
+                    },
+                    onClosed: function($dialog) {
+                        alert('Dialog is closed');
+                    },
+                    onResize: function($dialog) {
+                        alert('Dialog is resizing');
+                    },
+                    onAction: function (_action, _event, $dialog) {
+                        switch(_action) {
+                            case 'switch':
+                                $(this).protoDialog('settings', {
+                                    'actions': {
+                                        'new-refresh': {
+                                            'label': 'New Refresh',
+                                            'class': 'btn btn-default'
+                                        },
+                                        'new-apply': {
+                                            'label': 'New Apply',
+                                            'class': 'btn btn-primary'
+                                        },
+                                        'custom': {
+                                            'label': 'New Custom',
+                                            'class': 'btn btn-warning',
+                                            'on': {
+                                                'click': function(e) {
+                                                    $(this).html('custom - custom on click event');
+                                                },
+                                                'mouseover': function(e) {
+                                                    $(this).html('custom - custom on mouse over event');
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                                break;
+                            default:
+                                $(this).html(_action + ' - auto click event');
+                                break;
+                        }
+                    }
+                });
+                
+                $('#open-dialog').on('click', function () {
+                    $('#proto-dialog').protoDialog('open');
+                });
+            });
+        </script>
+        <style>
+            body { text-align: center; }
+            button { background-color: #efefef; color: #333; border: none; padding: 10px 20px; }
+            button:hover { background-color: #fafafa; }
+        </style>
+    </head>
+    <body>
+        <h1>prodo-dialog-js</h1>
+        <div id="proto-dialog">
+            <div id="proto-dialog-header">Header</div>
+            <div id="proto-dialog-content">Content</div>
+            <div id="proto-dialog-footer">Footer</div>
+        <!-- ... -->
+        </div>
+        <button id="open-dialog" type="button">Open Dialog</button>
+    </body>
+</html>
