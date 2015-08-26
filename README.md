@@ -1,5 +1,26 @@
 # proto-dialog-js
 
+## Table of Contents
+
+- [Usage](#usage)
+- [Options](#options)
+    - [Actions](#actions)
+    - [onAction](#onaction)
+    - [onInit](#oninit)
+    - [onOpen](#onopen)
+    - [onOpened](#onopened)
+	- [onClose](#onclose)
+	- [onClosed](#onclosed)
+    - [onResize](#onresize)
+- [Methods](#methods)
+    - [open](#open)
+    - [close](#close)
+    - [settings](#settings)
+- [Advanced usage](#advanced-usage)
+    - [Controller](#controller)
+    - [Settings](#settings-1)
+    - [Dialog](#dialog)
+
 ## Usage
 
 ```html
