@@ -93,7 +93,23 @@
             });
         };
 
-        this.settings = function(newSettings) {
+        this.setTitle = function (newTitle) {
+            _browserTitle.find('h3').empty().append(newTitle);
+        };
+
+        this.setContent = function (newContent) {
+            $($target).empty().append(newContent);
+        };
+
+        this.getSettings = function () {
+            return _instance;
+        };
+
+        this.isOpened = function () {
+            return _visible;
+        };
+
+        this.setSettings = function(newSettings) {
             _instance = newSettings;
 
             if (_instance['actions']) {
@@ -127,7 +143,7 @@
 
         var _this = this;
         
-        _this.settings(_settings);
+        _this.setSettings(_settings);
         
         _browserWindow.click(function (e) {
             e.stopPropagation();
@@ -206,7 +222,15 @@
                 if (_data) {
                     // search for elements
                     var _controller = _data['controller'];
-                        _controller.open();
+                    if (_settings['title']) {
+                        _controller.setTitle(_settings['title']);
+                    }
+                    
+                    if (_settings['content']) {
+                        _controller.setContent(_settings['content']);
+                    }
+                    
+                    _controller.open();
                 }
             });
         },
@@ -238,7 +262,7 @@
                     console.log(_data['settings']);
                     
                     $this.data('protoDialog', _data);
-                    _controller.settings(_data['settings']);
+                    _controller.setSettings(_data['settings']);
                 }
             });
         }

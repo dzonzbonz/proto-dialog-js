@@ -184,7 +184,10 @@ Take a look at the list of methods to control the dialog.
 This method is called to open a dialog manually.
 
 ```javascript
-$('#proto-dialog').protoDialog('open');
+$('#proto-dialog').protoDialog('open', {
+    ['title': ... ]
+    [, 'content': ... ]
+});
 ```
 
 ### close
@@ -210,8 +213,8 @@ The advanced usage is about taking full control of the dialog.
 ### Dialog
 
 Take a look at the dialog HTML structure in order to have a better view, and push your ideas further.
-When ever you have a `$dialog` variable in a `on***` function, this will be your $('.proto-dialog-overlay') object.
-The <!-- Dialog content --> is replaced by your target object that the widget is applied to.
+When ever you have a `$dialog` variable in a `on***` function, this will be your `$('.proto-dialog-overlay')` object.
+The `<!-- Dialog content -->` is replaced by your target object that the widget is applied to.
 
 ```html
 <div class="proto-dialog-overlay">
@@ -222,9 +225,7 @@ The <!-- Dialog content --> is replaced by your target object that the widget is
                 <h3><!-- Title --></h3>
             </div>
             <div class="proto-dialog-content">
-                <div id="proto-dialog">
-                    <!-- Dialog content -->
-                </div>
+                <!-- Dialog content -->
             </div>
             <div class="proto-dialog-actions">
                 <!-- Action buttons -->
@@ -235,5 +236,48 @@ The <!-- Dialog content --> is replaced by your target object that the widget is
 ```
 
 ### Controller
+
+```javascript
+var controllerInterface = {
+    /**
+     * Closes the dialog
+     */
+    'close': function () {},
+    /**
+     * Openes the dialog
+     */
+    'open': function () {},
+    /**
+     * Is dialog opened
+     */
+    'isOpened': function () {},
+    /**
+     * Sets the title
+     */
+    'setTitle': function () {},
+    /**
+     * Sets the content
+     */
+    'setContent': function () {},
+    /**
+     * Defines new settings
+     */
+    'setSettings': function () {},
+    /**
+     * Get current settings
+     */
+    'getSettings': function () {},
+};
+
+/* Get dialog controller instance */
+var _data = $('#proto-dialog').data('protoDialog');
+
+// If the widget is initialized
+if (_data) {
+    var _controller = _data['controller'];
+    var _settings = _data['settings'];
+    var $target = _data['target']; // === $('#proto-dialog')
+}
+```
 
 ### Settings
