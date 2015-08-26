@@ -19,7 +19,6 @@
 - [Advanced usage](#advanced-usage)
     - [Dialog](#dialog)
     - [Controller](#controller)
-    - [Settings](#settings-1)
 
 ## Usage
 
@@ -279,5 +278,3 @@ if (_data) {
     var $target = _data['target']; // === $('#proto-dialog')
 }
 ```
-
-### Settings
