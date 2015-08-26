@@ -6,13 +6,14 @@
 
     var _protoDialogControllerClass = function($target, _settings) {
         var _instance = _settings;
-
+        var _visible = false;
+        
         var $canvas = $('<div class="proto-dialog-overlay"></div>');
 
         var _browserWindow = $('<div class="proto-dialog-window"></div>');
         var _browserInner = $('<div class="proto-dialog-inner"></div>');
 
-        var _browserClose = $('<div class="proto-dialog-close proto-dialog-button"></div>');
+        var _browserClose = $('<button type="button" class="proto-dialog-close proto-dialog-button"></button>');
 
         var _browserTitle = $('<div class="proto-dialog-title"><h3></h3></div>');
         var _browserContent = $('<div class="proto-dialog-content"></div>');
@@ -31,42 +32,85 @@
         $('body').append($canvas);
 
         this.open = function() {
+            if (_visible) {
+                return;
+            }
             
             _instance.onOpen.call($target, $canvas);
 //            _browserWindow.fadeOut(0);
+        // call the animation window
             $canvas.fadeOut(0);
             $canvas.show();
             $canvas.fadeOut(0);
-            $canvas.fadeIn(500, function() {
-                _browserInner.animate({
-                    'top': '0px'
-                }, function() {
-                    _instance.onResize.call($target, $canvas);
-                    _instance.onOpened.call($target, $canvas);
-                });
-            });
+            
+            var animationFunction = function (onDoneAnimating) {
+                return function() {
+                    $(this).find('.proto-dialog-inner').animate({
+                        'top': '0px'
+                    }, onDoneAnimating);
+                };
+            };
+            
+            if (_instance['animation']) {
+                if (_instance['animation']['open']) {
+                    animationFunction = _instance['animation']['open'];
+                }
+            }
+            
+            $canvas.fadeIn(300);
+            
+            animationFunction(function() {
+                _visible = true;
+                _instance.onResize.call($target, $canvas);
+                _instance.onOpened.call($target, $canvas);
+            }).call($canvas);
         };
 
         this.close = function() {
+            if (!_visible) {
+                return;
+            }
+            
             _instance.onClose.call($target, $canvas);
-            _browserInner.animate({
-                    'top': '-100%'
-                }, function() {
-                $canvas.fadeOut(500, function() {
-                    $canvas.hide();
-                    _instance.onClosed.call($target, $canvas);
-                });
+            
+            var animationFunction = function (onDoneAnimating) {
+                $(this).find('.proto-dialog-inner').animate({
+                    'top': '-120%'
+                }, onDoneAnimating);
+            };
+            
+            if (_instance['animation']) {
+                if (_instance['animation']['close']) {
+                    animationFunction = _instance['animation']['close'];
+                }
+            }
+            
+            animationFunction.call($canvas);
+            
+            $canvas.fadeOut(300, function () {
+                _visible = false;
+                _instance.onClosed.call($target, $canvas);
             });
         };
 
-        this.settings = function(newSettings) {
+        this.setTitle = function (newTitle) {
+            _browserTitle.find('h3').empty().append(newTitle);
+        };
+
+        this.setContent = function (newContent) {
+            $($target).empty().append(newContent);
+        };
+
+        this.getSettings = function () {
+            return _instance;
+        };
+
+        this.isOpened = function () {
+            return _visible;
+        };
+
+        this.setSettings = function(newSettings) {
             _instance = newSettings;
-
-            _browserWindow.attr('class', 'proto-dialog-window');
-
-            if (_instance['size']) {
-                _browserWindow.addClass(_instance['size']);
-            }
 
             if (_instance['actions']) {
 
@@ -75,19 +119,31 @@
                 for (var _action in _instance.actions) {
                     var _actionConfig = _instance.actions[_action];
                     var $action = $('<button type="button" class="proto-dialog-button ' + _actionConfig['class'] + '">' + _actionConfig['label'] + '</button>');
+                    if (_actionConfig['on']) {
+                        for (var onEvent in _actionConfig['on']) {
+                            (function(_on, _onFunction) {
+                                $action.on(_on, function(e) {
+                                    _onFunction.call($target, e, $canvas);
+                                });
+                            })(onEvent, _actionConfig['on'][onEvent]);
+                        }
+                    }
+                    else {
+                        (function(_a) {
+                            $action.click(function(e) {
+                                _instance.onAction.call($target, _a, e, $canvas);
+                            });
+                        })(_action);
+                    }
+                    
                     _browserActions.append($action);
-                    (function(_a) {
-                        $action.click(function(e) {
-                            _instance.onAction.call($target, _a, $canvas, e);
-                        });
-                    })(_action);
                 }
             }
         };
 
         var _this = this;
         
-        _this.settings(_settings);
+        _this.setSettings(_settings);
         
         _browserWindow.click(function (e) {
             e.stopPropagation();
@@ -105,7 +161,9 @@
         _instance.onInit.call($target, $canvas);
         
         $(window).resize(function () {
-            _instance.onResize.call($target, $canvas);
+            if (_visible) {
+                _instance.onResize.call($target, $canvas);
+            }
         });
     };
 
@@ -113,6 +171,10 @@
         init: function(options) {
             var _settings = $.extend({
                 actions: {
+                },
+                animation: {
+                    'open': false,
+                    'close': false
                 },
                 onInit: function($dialog) {
                 },
@@ -126,7 +188,7 @@
                 },
                 onResize: function($dialog) {
                 },
-                onAction: function(_action, $dialog) {
+                onAction: function(_action, _event, $dialog) {
                 }
             }, options);
 
@@ -160,7 +222,15 @@
                 if (_data) {
                     // search for elements
                     var _controller = _data['controller'];
-                        _controller.open();
+                    if (_settings['title']) {
+                        _controller.setTitle(_settings['title']);
+                    }
+                    
+                    if (_settings['content']) {
+                        _controller.setContent(_settings['content']);
+                    }
+                    
+                    _controller.open();
                 }
             });
         },
@@ -186,9 +256,13 @@
                 if (_data) {
                     // search for elements
                     var _controller = _data['controller'];
-                    _data['settings'] = _settings;
+                    
+                    _data['settings'] = $.extend(_data['settings'], _settings);
+                    
+                    console.log(_data['settings']);
+                    
                     $this.data('protoDialog', _data);
-                    _controller.settings(_settings);
+                    _controller.setSettings(_data['settings']);
                 }
             });
         }
