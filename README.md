@@ -60,18 +60,46 @@ Default: `{}`
 Define buttons that you want on action bar
 
 ```javascript
-var actions: {
-    'actionKey': {
+var actions = {
+    'actionOne': {
         'label': 'button label',
         'class': 'html classes',
         'on': {
-            'click': function(e) {
+            'click': function(event, $dialog) {
                 $(this).html('custom - custom on click event');
             },
-            'mouseover': function(e) {
+            'mouseover': function(event, $dialog) {
                 $(this).html('custom - custom on mouse over event');
             }
         }
+    },
+    'actionTwo': {
+        'label': 'button label',
+        'class': 'html classes'
+    },
+    'actionTree': {
+        'label': 'button label',
+        'class': 'html classes'
+    }
+};
+```
+
+### onAction
+
+Type: `Function`
+Default: `function ($_action, _event, $dialog) {}`
+
+This method is called each time when an action button is clicked. If you want to have full control on action button events use the `on` key in `actions`.
+
+```javascript
+var onAction = function (action, _event, $dialog) {
+    switch(_action) {
+        case 'actionTwo':
+            /* Some specific action for button actionTwo */
+            break;
+        default:
+            $(this).html(_action + ' - auto click event');
+            break;
     }
 };
 ```
@@ -79,7 +107,7 @@ var actions: {
 ### onInit
 
 Type: `Function`
-Default: function ($dialog) {}`
+Default: `function ($dialog) {}`
 
 This method is called when the dialog is initialized for the first time, and it is called one time only from the widget.
 
@@ -94,13 +122,50 @@ var onInit: function ($dialog) {
 ### onOpen
 
 Type: `Function`
-Default: function ($dialog) {}`
+Default: `function ($dialog) {}`
 
 This method is called each time before the dialog is to be opened.
 
 ### onOpened
 
 Type: `Function`
-Default: function ($dialog) {}`
+Default: `function ($dialog) {}`
 
 This method is called each time after the dialog has been opened.
+
+### onClose
+
+Type: `Function`
+Default: `function ($dialog) {}`
+
+This method is called each time before the dialog is to be closed.
+
+### onClosed
+
+Type: `Function`
+Default: `function ($dialog) {}`
+
+This method is called each time after the dialog has been closed.
+
+### onResize
+
+Type: `Function`
+Default: `function ($dialog) {}`
+
+This method is called each time when the screen size changes.
+
+## Methods
+
+### open
+
+### close
+
+### settings
+
+## Advanced usage
+
+### Controller
+
+### Settings
+
+### Dialog
