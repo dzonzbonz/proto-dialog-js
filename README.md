@@ -17,9 +17,9 @@
     - [close](#close)
     - [settings](#settings)
 - [Advanced usage](#advanced-usage)
+    - [Dialog](#dialog)
     - [Controller](#controller)
     - [Settings](#settings-1)
-    - [Dialog](#dialog)
 
 ## Usage
 
@@ -177,16 +177,63 @@ This method is called each time when the screen size changes.
 
 ## Methods
 
+Take a look at the list of methods to control the dialog.
+
 ### open
+
+This method is called to open a dialog manually.
+
+```javascript
+$('#proto-dialog').protoDialog('open');
+```
 
 ### close
 
+This method is called to close a dialog manually.
+
+```javascript
+$('#proto-dialog').protoDialog('close');
+```
+
 ### settings
 
+This method is called when you want to override settings.
+
+```javascript
+$('#proto-dialog').protoDialog('settings', { ... });
+```
+
 ## Advanced usage
+
+The advanced usage is about taking full control of the dialog.
+
+### Dialog
+
+Take a look at the dialog HTML structure in order to have a better view, and push your ideas further.
+When ever you have a `$dialog` variable in a `on***` function, this will be your $('.proto-dialog-overlay') object.
+The <!-- Dialog content --> is replaced by your target object that the widget is applied to.
+
+```html
+<div class="proto-dialog-overlay">
+    <div class="proto-dialog-window">
+        <div class="proto-dialog-inner">
+            <button type="button" class="proto-dialog-close proto-dialog-button"></button>
+            <div class="proto-dialog-title">
+                <h3><!-- Title --></h3>
+            </div>
+            <div class="proto-dialog-content">
+                <div id="proto-dialog">
+                    <!-- Dialog content -->
+                </div>
+            </div>
+            <div class="proto-dialog-actions">
+                <!-- Action buttons -->
+            </div>
+        </div>
+    </div>
+</div>
+```
 
 ### Controller
 
 ### Settings
-
-### Dialog
