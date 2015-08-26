@@ -222,12 +222,20 @@
                 if (_data) {
                     // search for elements
                     var _controller = _data['controller'];
-                    if (_settings['title']) {
+                    if (_settings && _settings['title']) {
                         _controller.setTitle(_settings['title']);
                     }
                     
-                    if (_settings['content']) {
+                    if (_settings && _settings['content']) {
                         _controller.setContent(_settings['content']);
+                    }
+                    
+                    _data['settings'] = $.extend(_data['settings'], _settings);
+                    
+                    $this.data('protoDialog', _data);
+                    
+                    if (_settings) {
+                        _controller.setSettings(_data['settings']);
                     }
                     
                     _controller.open();
@@ -258,8 +266,6 @@
                     var _controller = _data['controller'];
                     
                     _data['settings'] = $.extend(_data['settings'], _settings);
-                    
-                    console.log(_data['settings']);
                     
                     $this.data('protoDialog', _data);
                     _controller.setSettings(_data['settings']);
