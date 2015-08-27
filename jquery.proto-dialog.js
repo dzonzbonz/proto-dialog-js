@@ -30,7 +30,7 @@
         $canvas.append(_browserWindow);
 
         $('body').append($canvas);
-
+        
         this.open = function() {
             if (_visible) {
                 return;
@@ -64,6 +64,7 @@
                 _instance.onResize.call($target, $canvas);
                 _instance.onOpened.call($target, $canvas);
             }).call($canvas);
+            
         };
 
         this.close = function() {
@@ -230,7 +231,7 @@
                         _controller.setContent(_settings['content']);
                     }
                     
-                    _data['settings'] = $.extend(_data['settings'], _settings);
+                    _data['settings'] = $.extend(true, _controller.getSettings(), _settings);
                     
                     $this.data('protoDialog', _data);
                     
@@ -265,7 +266,7 @@
                     // search for elements
                     var _controller = _data['controller'];
                     
-                    _data['settings'] = $.extend(_data['settings'], _settings);
+                    _data['settings'] = $.extend(true, _controller.getSettings(), _settings);
                     
                     $this.data('protoDialog', _data);
                     _controller.setSettings(_data['settings']);
