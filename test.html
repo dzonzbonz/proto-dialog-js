@@ -17,7 +17,7 @@ and open the template in the editor.
         <script type="text/javascript" language="javascript">
             $(document).ready(function() {
                 $('#proto-dialog').protoDialog({
-                    'actions': {
+                    'buttons': {
                         'refresh': {
                             'label': 'Refresh',
                             'class': 'btn btn-default'
@@ -44,28 +44,41 @@ and open the template in the editor.
                         }
                     },
                     onInit: function($dialog) {
-                        alert('Dialog Initialized');
+//                        alert('Dialog Initialized');
                     },
                     onOpen: function($dialog) {
-                        alert('Dialog is about to be opened');
+//                        alert('Dialog is about to be opened');
                     },
                     onOpened: function($dialog) {
-                        alert('Dialog is opened');
+//                        alert('Dialog is opened');
                     },
                     onClose: function($dialog) {
-                        alert('Dialog is about to be closed');
+//                        alert('Dialog is about to be closed');
                     },
                     onClosed: function($dialog) {
-                        alert('Dialog is closed');
+//                        alert('Dialog is closed');
                     },
                     onResize: function($dialog) {
-                        alert('Dialog is resizing');
+//                        alert('Dialog is resizing');
                     },
                     onAction: function (_action, _event, $dialog) {
                         switch(_action) {
                             case 'switch':
                                 $(this).protoDialog('settings', {
-                                    'actions': {
+                                    'title': 'New Dialog Title',
+                                    'buttons': {
+                                        'next' : {
+                                            'label': '>',
+                                            'class': 'btn btn-default',
+                                            'type': 'control',
+                                            'order': 'before'
+                                        },
+                                        'prev' : {
+                                            'label': '<',
+                                            'class': 'btn btn-default',
+                                            'type': 'control',
+                                            'order': 'before'
+                                        },
                                         'new-refresh': {
                                             'label': 'New Refresh',
                                             'class': 'btn btn-default'
@@ -97,7 +110,9 @@ and open the template in the editor.
                 });
                 
                 $('#open-dialog').on('click', function () {
-                    $('#proto-dialog').protoDialog('open');
+                    $('#proto-dialog').protoDialog('open', {
+                        'title': 'Dialog Title'
+                    });
                 });
             });
         </script>

@@ -1,18 +1,31 @@
 .proto-dialog-overlay { 
     position: fixed; z-index: 100; background-color: #000; background-color: rgba(0,0,0,0.7); 
     width: 100%; height: 100%; top: 0; left: 0; padding: 0; margin: 0; display: none;
+    text-align: left;
+}
+
+.proto-dialog-overlay * {
+    box-sizing: border-box;
 }
 
 .proto-dialog-window { 
-    position: absolute; left: 20px; top: 20px; right: 20px; bottom: 20px; 
+    border: 1px solid rgba(0, 0, 0, 0.3); 
+    position: absolute; 
+    left: 25%; top: 25%; right: 25%; bottom: 25%; 
+    /*left: 20px; top: 20px; right: 20px; bottom: 20px;*/ 
 }
 
 .proto-dialog-window.small { 
-    left: 25%; top: 25%; right: 25%; bottom: 25%; overflow: auto;
+    left: 25%; top: 25%; right: 25%; bottom: 25%; 
+}
+
+.proto-dialog-window.full { 
+    left: 0; top: 0; right: 0; bottom: 0;
 }
 
 .proto-dialog-inner { 
-    border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
     position: absolute; left:0px; top: -100%; width: 100%; height: 100%; overflow: hidden;
 }
 
@@ -26,45 +39,65 @@
     margin: 0px; font-size: 20px; line-height: 24px; color: #777;
 }
 
-.proto-dialog-button.proto-dialog-close {
-    width: 45px; height: 45px; line-height: 45px; z-index: 3;
-    position: absolute; right: 0; top: 0; cursor: pointer;
-    background-color: #777; color: #fff;
-}
-
-.proto-dialog-button.proto-dialog-close:after {
-    position: absolute; left: 0; top: 0; content: "X"; text-align: center; display: block;
-    width: 45px; height: 45px; line-height: 45px; font-weight: bold; 
-}
-
 .proto-dialog-content {
     position: absolute;
-    left: 0px; top: 45px; right: 0px; bottom: 45px; overflow: auto;
-    background-color: #fff;
+    left: 0px; top: 43px; right: 0px; bottom: 43px; overflow: auto;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    padding: 0;
+    padding: 10px;
+    border-top: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
 }
-
-.proto-dialog-content:before, 
-.proto-dialog-content:after {
-    display: table;
-    line-height: 0;
-    content: "";
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-.proto-dialog-content:after {
-    clear: both;
-}
-
-.proto-dialog-actions {
+.proto-dialog-actions,
+.proto-dialog-controls
+{
+    font-size: 0px; text-spacing: 0px;
     position: absolute;
-    left: 0px; bottom: 0px; right: 0px; overflow: auto; height: 45px;
-    padding: 5px; text-align: right;
+    left: -1px; right: -1px; overflow: hidden; height: 45px;
+    text-align: center;
+}
+.proto-dialog-actions
+{
+    text-align: right;
+    bottom: -1px;
+}
+.proto-dialog-controls
+{
+    top: -1px; left: auto;
+}
+
+.proto-dialog-button {
+    cursor: pointer;
+    font-size: 12px; text-align: center;
+    background-color: #fafafa; color: #333;
+    border: 1px solid #eee; height: 45px; display: inline-block;
+}
+.proto-dialog-button:hover {
+    background-color: #fff; color: #333;
+}
+
+.proto-dialog-controls > *,
+.proto-dialog-actions > *
+{
+    padding: 5px 15px; height: 45px; line-height: 35px;
+    display: inline-block; margin-left: -1px;
+}
+
+.proto-dialog-controls > *:first-child,
+.proto-dialog-actions > *:first-child
+{
+    margin-left: 0;
+}
+
+.proto-dialog-controls > *
+{
+    width: 45px; padding: 5px; 
+}
+
+.proto-dialog-close {
+    width: 45px; background-color: #f44336; color: #fff;
+}
+.proto-dialog-close:hover {
+    background-color: #ef5350; color: #fff;
 }

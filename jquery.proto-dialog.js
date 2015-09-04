@@ -14,16 +14,23 @@
         var _browserInner = $('<div class="proto-dialog-inner"></div>');
 
         var _browserClose = $('<button type="button" class="proto-dialog-close proto-dialog-button"></button>');
-
+        var _closeButtonParams = {
+            'label': 'x',
+            'class': 'proto-dialog-close proto-dialog-button',
+            'type': 'control'
+        };
         var _browserTitle = $('<div class="proto-dialog-title"><h3></h3></div>');
         var _browserContent = $('<div class="proto-dialog-content"></div>');
         var _browserActions = $('<div class="proto-dialog-actions"></div>');
+        var _browserControls = $('<div class="proto-dialog-controls"></div>');
+
+        _browserControls.append(_browserClose);
 
         $target.detach().appendTo(_browserContent);
 
-        _browserInner.append(_browserClose)
-                .append(_browserTitle)
+        _browserInner.append(_browserTitle)
                 .append(_browserContent)
+                .append(_browserControls)
                 .append(_browserActions);
 
         _browserWindow.append(_browserInner);
@@ -47,7 +54,7 @@
                 return function() {
                     $(this).find('.proto-dialog-inner').animate({
                         'top': '0px'
-                    }, onDoneAnimating);
+                    }, 300, onDoneAnimating);
                 };
             };
             
@@ -112,14 +119,36 @@
 
         this.setSettings = function(newSettings) {
             _instance = newSettings;
-
-            if (_instance['actions']) {
+            
+            if (_instance && _instance['title']) {
+                this.setTitle(_instance['title']);
+            }
+            
+            if (_instance['buttons']) {
 
                 _browserActions.empty();
+                _browserControls.empty();
 
-                for (var _action in _instance.actions) {
-                    var _actionConfig = _instance.actions[_action];
+                if (!_instance['buttons']) {
+                    _instance['buttons'] = {};
+                }
+
+                if (!_instance['buttons']['close']) {
+                    _instance['buttons']['close'] = _closeButtonParams;
+                }
+                
+                _instance['buttons']['close']['on'] = {
+                    'click' : function (e, $canvas) {
+                        e.preventDefault();
+                        _this.close();
+                    }
+                };
+
+                for (var _action in _instance.buttons) {
+                    var _actionConfig = _instance.buttons[_action];
+                    
                     var $action = $('<button type="button" class="proto-dialog-button ' + _actionConfig['class'] + '">' + _actionConfig['label'] + '</button>');
+                    
                     if (_actionConfig['on']) {
                         for (var onEvent in _actionConfig['on']) {
                             (function(_on, _onFunction) {
@@ -137,12 +166,43 @@
                         })(_action);
                     }
                     
-                    _browserActions.append($action);
+                    var $destinationHolder = _browserActions;
+                    var $destinationPosition = 'append';
+                    
+                    if (_actionConfig['type']) {
+                        switch (_actionConfig['type']) {
+                            case 'control':
+                                $destinationHolder = _browserControls;
+                                break;
+                            default:
+                                $destinationHolder = _browserActions;
+                                break;
+                        }
+                    }
+                    
+                    if (_actionConfig['order']) {
+                        switch (_actionConfig['order']) {
+                            case 'before':
+                                $destinationPosition = 'prepend';
+                                break;
+                            default:
+                                $destinationPosition = 'append';
+                                break;
+                        }
+                    }
+                    
+                    $destinationHolder[$destinationPosition]($action);
                 }
+                
+                _refreshTitleWidth();
             }
         };
 
         var _this = this;
+        
+        var _refreshTitleWidth = function () {
+            _browserTitle.css('right', _browserControls.outerWidth() + 'px');
+        };
         
         _this.setSettings(_settings);
         
@@ -150,11 +210,6 @@
             e.stopPropagation();
     	});
     	
-        _browserClose.click(function (e) {
-            e.preventDefault();
-            _this.close();
-    	});
-        
     	$canvas.click(function (e) {
             _this.close();
     	});
@@ -162,17 +217,20 @@
         _instance.onInit.call($target, $canvas);
         
         $(window).resize(function () {
+            _refreshTitleWidth();
+                
             if (_visible) {
                 _instance.onResize.call($target, $canvas);
             }
         });
     };
-
+    
     var methods = {
         init: function(options) {
             var _settings = $.extend({
-                actions: {
+                buttons: {
                 },
+                title: '',
                 animation: {
                     'open': false,
                     'close': false
@@ -223,15 +281,16 @@
                 if (_data) {
                     // search for elements
                     var _controller = _data['controller'];
-                    if (_settings && _settings['title']) {
-                        _controller.setTitle(_settings['title']);
-                    }
                     
                     if (_settings && _settings['content']) {
                         _controller.setContent(_settings['content']);
                     }
                     
                     _data['settings'] = $.extend(true, _controller.getSettings(), _settings);
+                    
+                    if (_settings['buttons']) {
+                        _data['settings']['buttons'] = _settings['buttons'];
+                    }
                     
                     $this.data('protoDialog', _data);
                     
@@ -267,6 +326,10 @@
                     var _controller = _data['controller'];
                     
                     _data['settings'] = $.extend(true, _controller.getSettings(), _settings);
+                    
+                    if (_settings['buttons']) {
+                        _data['settings']['buttons'] = _settings['buttons'];
+                    }
                     
                     $this.data('protoDialog', _data);
                     _controller.setSettings(_data['settings']);
