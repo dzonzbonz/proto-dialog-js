@@ -315,6 +315,19 @@
                 }
             });
         },
+        title: function( newTitle ) {
+            return this.each(function() {
+                var $this = $(this);
+                var _data = $this.data('protoDialog');
+
+                // If the plugin hasn't been initialized yet
+                if (_data) {
+                    // search for elements
+                    var _controller = _data['controller'];
+                        _controller.setTitle( newTitle );
+                }
+            });
+        },
         settings: function(_settings) {
             return this.each(function() {
                 var $this = $(this);
